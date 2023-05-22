@@ -14,6 +14,7 @@ public class Enemy : Starship
     protected override void Start()
     {
         base.Start();
+        SetMoveSpeed();
     }
     private void OnEnable()
     {
@@ -70,5 +71,9 @@ public class Enemy : Starship
         {
             Instantiate(_dropOnDie, transform.position, Quaternion.identity, InGameManager.instance.dropTransform);
         }
+    }
+    private void SetMoveSpeed()
+    {
+        moveSpeed = LevelManager.instance.levels[GameVariables.currentLevel].enemiesSpeed;
     }
 }

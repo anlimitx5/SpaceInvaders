@@ -49,6 +49,7 @@ public abstract class Starship : MonoBehaviour
     public void ChangeWeapon(Weapon weapon)
     {
         _weaponPrefab = weapon;
+        GameVariables.currentWeaponPrefab = weapon;
         SelectCurrentWeapon();
     }
     public float GetMoveSpeed()
@@ -91,5 +92,5 @@ public abstract class Starship : MonoBehaviour
             StopCoroutine(shootCoroutine);
             shootCoroutine = StartCoroutine(Shoot());
         }
-    }
+    }    
 }

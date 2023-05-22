@@ -17,8 +17,7 @@ public class InGameManager : MonoBehaviour
     private Vector2 _gameZoneY = new Vector2();
     private Vector2 _playerStartPosition;
     private List<Vector2> _enemysStartPositions = new List<Vector2>();
-    private int _fullScore = 0;
-    private int _enemyCounter = 30;
+    private int _enemyCounter;
 
     private void Awake()
     {
@@ -30,17 +29,21 @@ public class InGameManager : MonoBehaviour
     }
     private void Start()
     {
+        Invoke(nameof(LevelStart), 3);
+    }
+    void LevelStart()
+    {
         StartCoroutine(SpawnEnemies());
-        InGameUI.instance.ChangeScore(_fullScore);
-        InGameUI.instance.ChangeEnemiesCounter(_enemyCounter);
+        _enemyCounter = LevelManager.instance.levels[GameVariables.currentLevel].targetEnemiesCount;
+        Player.instance.StartShoot();
     }
     private IEnumerator SpawnEnemies()
     {
         while (true && !Player.instance.IsDead())
         {
-            int enemiesValue = UnityEngine.Random.Range(0, _enemysStartPositions.Count);
+            int enemiesCount = UnityEngine.Random.Range(0, _enemysStartPositions.Count);
             List<Vector2> freePositions = new List<Vector2>(_enemysStartPositions);
-            for (int i = 0; i < enemiesValue; i++)
+            for (int i = 0; i < enemiesCount; i++)
             {
                 int randomFreePosition = UnityEngine.Random.Range(0, freePositions.Count);
                 Vector2 startPosition = freePositions[randomFreePosition];
@@ -104,8 +107,8 @@ public class InGameManager : MonoBehaviour
     }
     public void ChangeScore(int score)
     {
-        _fullScore += score;
-        InGameUI.instance.ChangeScore(_fullScore);
+        GameVariables.fullScore += score;
+        InGameUI.instance.ChangeScore(GameVariables.fullScore);
     }
     private void ChangeStarsSpeed()
     {

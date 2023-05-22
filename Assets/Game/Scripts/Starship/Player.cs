@@ -22,13 +22,29 @@ public class Player : Starship
     }
     protected override void Start()
     {
+        SetStarterWeapon();
         base.Start();
         PlayerController.instance.OnStartMove += FlyAnimation;
         PlayerController.instance.OnFinishMove += FlyAnimation;
         InGameManager.instance.OnVictory += StopAll;
         InGameUI.instance.ChangeHealth(currentHealth, maximumHealth);
         transform.position = InGameManager.instance.GetPlayerStartPosition();
+    }
+    public void StartShoot()
+    {
         shootCoroutine = StartCoroutine(Shoot());
+    }
+    private void SetStarterWeapon()
+    {
+        if(GameVariables.currentWeaponPrefab!= null)
+        {
+            _weaponPrefab = GameVariables.currentWeaponPrefab;
+        }
+        else
+        {
+            GameVariables.currentWeaponPrefab = _weaponPrefab;
+        }
+        Debug.Log(GameVariables.currentWeaponPrefab.name);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
